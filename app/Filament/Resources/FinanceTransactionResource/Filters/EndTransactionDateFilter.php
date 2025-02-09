@@ -12,7 +12,7 @@ class EndTransactionDateFilter extends Filter
     {
         return parent::make($name)
             ->form([
-                DatePicker::make('end_date')->default(self::endOfMonth())->label('Início')
+                DatePicker::make('end_date')->default(self::endOfMonth())->label('Transação - Final')
             ])->query(function ($query, array $data) {
                 if (!empty($data['end_date'])) {
                     return $query->where('transaction_date', '<=', $data['end_date']);
@@ -21,9 +21,8 @@ class EndTransactionDateFilter extends Filter
             });
     }
 
-    private static function endOfMonth():string
+    private static function endOfMonth(): string
     {
         return Carbon::now()->endOfMonth()->toDateString();
     }
-
 }

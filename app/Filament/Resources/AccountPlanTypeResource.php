@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountPlanTypeResource\Pages;
+use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
 use App\Models\AccountPlanType;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -32,9 +33,10 @@ class AccountPlanTypeResource extends Resource
         return $form->schema([
             TextInput::make('name')->label('Nome')->required()->maxLength(255),
             Select::make('type')->required()->label('Categoria')
-            ->options([
-                'revenue' => 'Ativo/Receita', 'expense' => 'Passivo/Despesa'
-            ]),
+                ->options([
+                    'revenue' => 'Ativo/Receita',
+                    'expense' => 'Passivo/Despesa'
+                ]),
             Hidden::make('company_id')->default(Auth::user()->company_id)
         ]);
     }
@@ -44,17 +46,20 @@ class AccountPlanTypeResource extends Resource
         return $table->columns([
             TextColumn::make('name')->label('Nome')->sortable()->searchable(),
             TextColumn::make('type')->label('Categoria')->sortable()->formatStateUsing(
-                fn (string $state): string => match ($state) {
+                fn(string $state): string => match ($state) {
                     'revenue' => 'Ativo/Receita',
                     'expense' => 'Passivo/Despesa'
-                })
+                }
+            )
         ])->filters([
             SelectFilter::make('type')->options([
-                'revenue' => 'Ativo/Receita', 'expense' => 'Passivo/Despesa'
-            ])->label('Categoria')
+                'revenue' => 'Ativo/Receita',
+                'expense' => 'Passivo/Despesa'
+            ])->label('Categoria'),
+            CompanyIdFilter::make()
         ])->actions([
-                EditAction::make()->label(''),
-                DeleteAction::make()->label(''),
+            EditAction::make()->label(''),
+            DeleteAction::make()->label(''),
         ])->bulkActions([
             DeleteBulkAction::make(),
         ]);

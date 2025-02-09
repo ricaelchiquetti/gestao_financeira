@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CompanyResource\Pages;
+use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
 use App\Models\Company;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -43,6 +44,8 @@ class CompanyResource extends Resource
             TextColumn::make('name')->label('Nome')->searchable()->sortable(),
             TextColumn::make('cnpj')->label('CNPJ')->searchable()->sortable(),
             IconColumn::make('active')->label('Ativo')->boolean()->sortable(),
+        ])->filters([
+            CompanyIdFilter::make()
         ])->actions([
             EditAction::make()->label(''),
             DeleteAction::make()->label(''),

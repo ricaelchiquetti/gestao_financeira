@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountPlanResource\Pages;
+use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
 use App\Models\AccountPlan;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -42,17 +43,14 @@ class AccountPlanResource extends Resource
             TextColumn::make('code')->sortable()->searchable()->label('Código'),
             TextColumn::make('description')->sortable()->searchable()->label('Descrição'),
             TextColumn::make('accountPlanType.name')->sortable()->searchable()->label('Plano de Contas'),
+        ])->filters([
+            CompanyIdFilter::make()
         ])->actions([
-                EditAction::make()->label(''),
-                DeleteAction::make()->label(''),
+            EditAction::make()->label(''),
+            DeleteAction::make()->label(''),
         ])->bulkActions([
             DeleteBulkAction::make(),
         ]);
-    }
-
-    public static function getTableQuery()
-    {
-        return parent::getTableQuery()->where('company_id', Auth::user()->company_id);
     }
 
     public static function getPages(): array

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\EntityResource\Pages;
+use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
 use App\Models\Entity;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -31,7 +32,7 @@ class EntityResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('name')->required()->label('Nome')->columnSpanFull(),            
+            TextInput::make('name')->required()->label('Nome')->columnSpanFull(),
             TextInput::make('email')->email()->label('E-mail'),
             TextInput::make('phone')->tel()->label('Telefone'),
             TextInput::make('address')->label('Endereço')->columnSpanFull(),
@@ -52,17 +53,14 @@ class EntityResource extends Resource
                 'supplier' => 'Fornecedor',
                 'customer' => 'Cliente',
             ])
+        ])->filters([
+            CompanyIdFilter::make()
         ])->actions([
             EditAction::make()->label(''),
             DeleteAction::make()->label(''),
         ])->bulkActions([
             DeleteBulkAction::make(),
         ]);
-    }
-
-    public static function getTableQuery()
-    {
-        return parent::getTableQuery()->where('company_id', Auth::user()->company_id);
     }
 
     public static function getPages(): array

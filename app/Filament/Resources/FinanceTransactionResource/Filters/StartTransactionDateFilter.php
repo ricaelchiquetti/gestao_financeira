@@ -12,7 +12,7 @@ class StartTransactionDateFilter extends Filter
     {
         return parent::make($name)
             ->form([
-                DatePicker::make('start_date')->default(self::startOfMonth())->label('Final')
+                DatePicker::make('start_date')->default(self::startOfMonth())->label('Transação - Início')
             ])->query(function ($query, array $data) {
                 if (!empty($data['start_date'])) {
                     return $query->where('transaction_date', '>=', $data['start_date']);
@@ -21,9 +21,8 @@ class StartTransactionDateFilter extends Filter
             });
     }
 
-    private static function startOfMonth():string
+    private static function startOfMonth(): string
     {
         return Carbon::now()->startOfMonth()->toDateString();
     }
-
 }

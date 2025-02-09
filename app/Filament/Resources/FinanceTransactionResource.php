@@ -3,11 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FinanceTransactionResource\Filters\AccountPlanTypeFilter;
+use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
 use App\Filament\Resources\FinanceTransactionResource\Filters\EndTransactionDateFilter;
 use App\Filament\Resources\FinanceTransactionResource\Filters\StartTransactionDateFilter;
 use App\Filament\Resources\FinanceTransactionResource\Pages;
 use App\Filament\Resources\FinanceTransactionResource\Widgets\FinanceTransactionStats;
 use App\Models\FinanceTransaction;
+use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -29,15 +31,15 @@ class FinanceTransactionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $label = 'Transaçoes Financeiras';
-    
+    protected static ?string $label = 'Transações Financeiras';
+
     public static function form(Form $form): Form
     {
         return $form->schema([
             Select::make('account_plan_id')->required()->searchable()->label('Plano de Conta')
-            ->relationship('accountPlan', 'code')->getOptionLabelFromRecordUsing(function ($record) {
-                return $record->code . ' - ' . $record->description;
-            })->columnSpanFull(),
+                ->relationship('accountPlan', 'code')->getOptionLabelFromRecordUsing(function ($record) {
+                    return $record->code . ' - ' . $record->description;
+                })->columnSpanFull(),
 
             Select::make('entity_id')->required()->searchable()->label('Fornecedor/Cliente')
                 ->relationship('entity', 'name'),
@@ -62,21 +64,17 @@ class FinanceTransactionResource extends Resource
             TextColumn::make('entity.name')->toggleable()->searchable()->sortable()->label('Fornecedor/Cliente'),
             TextColumn::make('value')->toggleable()->sortable()->label('Valor'),
             TextColumn::make('due_date')->toggleable()->date('d/m/Y')->sortable()->label('Vencimento'),
-            ])->filters([
-                StartTransactionDateFilter::make(),
-                EndTransactionDateFilter::make(),
-                AccountPlanTypeFilter::make()
-            ], layout: FiltersLayout::AboveContent)->actions([
-                EditAction::make()->label(''),
-                DeleteAction::make()->label(''),
-            ])->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
-    }
-
-    public static function getTableQuery()
-    {
-        return parent::getTableQuery()->where('company_id', Auth::user()->company_id);
+        ])->filters([
+            StartTransactionDateFilter::make(),
+            EndTransactionDateFilter::make(),
+            AccountPlanTypeFilter::make(),
+            CompanyIdFilter::make()
+        ], layout: FiltersLayout::AboveContent)->actions([
+            EditAction::make()->label(''),
+            DeleteAction::make()->label(''),
+        ])->bulkActions([
+            Tables\Actions\DeleteBulkAction::make(),
+        ]);
     }
 
     public static function getWidgets(): array

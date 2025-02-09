@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms\Components\Hidden;
@@ -63,6 +64,8 @@ class UserResource extends Resource
         return $table->columns([
             TextColumn::make('name')->label('Name')->sortable()->searchable(),
             TextColumn::make('email')->label('Email')->sortable()->searchable(),
+        ])->filters([
+            CompanyIdFilter::make()
         ])->actions([
             EditAction::make()->label(''),
             DeleteAction::make()->label(''),

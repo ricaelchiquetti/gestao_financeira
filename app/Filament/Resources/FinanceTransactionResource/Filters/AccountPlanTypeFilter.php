@@ -15,12 +15,12 @@ class AccountPlanTypeFilter
                 'expense' => 'Contas a Pagar',
             ])
             ->query(function ($query, $value = []) {
-                 if ($value) {
-                     return $query->whereHas('accountPlan.accountPlanType', function ($query) use ($value) {
-                         $query->where('type', $value);
-                     });
-                 }
-                 return $query;
-             });
+                if ($value) {
+                    return $query->whereHas('accountPlan.accountPlanType', function ($query) use ($value) {
+                        $query->where('type', $value);
+                    });
+                }
+                return $query;
+            });
     }
 }
