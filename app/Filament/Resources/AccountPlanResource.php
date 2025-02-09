@@ -46,7 +46,7 @@ class AccountPlanResource extends Resource
                 EditAction::make()->label(''),
                 DeleteAction::make()->label(''),
         ])->bulkActions([
-            DeleteBulkAction::make()->label('Apagar selecionados'),
+            DeleteBulkAction::make(),
         ]);
     }
 

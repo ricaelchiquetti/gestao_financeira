@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FinanceTransactionResource\Pages;
+use App\Filament\Resources\FinanceTransactionResource\Widgets\FinanceTransactionStats;
 use App\Models\FinanceTransaction;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
@@ -18,7 +19,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 
@@ -68,7 +68,7 @@ class FinanceTransactionResource extends Resource
                 ->form([
                     DatePicker::make('start_date')->default(Carbon::now()->startOfMonth()->toDateString())->label('Início'),
                     DatePicker::make('end_date')->default(Carbon::now()->endOfMonth()->toDateString())->label('Final')
-                ])->columns(2)->query(function ($query, array $data) {
+                ])->query(function ($query, array $data) {
                     if (!empty($data['start_date']) && !empty($data['end_date'])) {
                         return $query->whereBetween('transaction_date', [$data['start_date'], $data['end_date']]);
                     }
@@ -78,21 +78,24 @@ class FinanceTransactionResource extends Resource
                     'receivable' => 'Contas a Receber',
                     'payable' => 'Contas a Pagar',
                 ]),
-                SelectFilter::make('payment_method')->label('Método de pagamento')->options([
-                    'cash' => 'Dinheiro',
-                    'bank_transfer' => 'Transferência Bancária',
-                ]),
-            ], layout: FiltersLayout::AboveContent)->actions([
+            ])->actions([
                 EditAction::make()->label(''),
                 DeleteAction::make()->label(''),
             ])->bulkActions([
-                Tables\Actions\DeleteBulkAction::make()->label('Apagar selecionados'),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getTableQuery()
     {
         return parent::getTableQuery()->where('company_id', Auth::user()->company_id);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            FinanceTransactionStats::class,
+        ];
     }
 
     public static function getPages(): array
