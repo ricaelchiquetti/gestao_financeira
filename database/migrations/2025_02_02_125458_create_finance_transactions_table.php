@@ -12,12 +12,11 @@ return new class extends Migration {
     {
         Schema::create('finance_transactions', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['receivable', 'payable']);
-
             $table->date('due_date');
             $table->date('transaction_date')->nullable();
-
+            
             $table->decimal('value', 10, 2);
+            $table->string('description')->nullable();
             $table->string('payment_method')->nullable();
 
             $table->foreignId('entity_id')->constrained('entities')->onDelete('cascade'); 

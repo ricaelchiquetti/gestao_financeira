@@ -22,15 +22,11 @@ class Entity extends Model
 
     protected $fillable = [
         'company_id',
-        'type',
+        'description',
         'name',
         'email',
         'phone',
         'address',
-    ];
-
-    protected $casts = [
-        'type' => 'string',
     ];
 
     public function company(): BelongsTo

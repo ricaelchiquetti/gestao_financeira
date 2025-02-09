@@ -22,6 +22,7 @@ class FinanceTransaction extends Model
     use HasFactory;
 
     protected $fillable = [
+        'description',
         'company_id',
         'entity_id',
         'account_plan_id',

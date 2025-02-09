@@ -31,7 +31,7 @@ class AccountPlanTypeResource extends Resource
     {
         return $form->schema([
             TextInput::make('name')->label('Nome')->required()->maxLength(255),
-            Select::make('type')->required()->label('Tipo')
+            Select::make('type')->required()->label('Categoria')
             ->options([
                 'revenue' => 'Ativo/Receita', 'expense' => 'Passivo/Despesa'
             ]),
@@ -43,7 +43,7 @@ class AccountPlanTypeResource extends Resource
     {
         return $table->columns([
             TextColumn::make('name')->label('Nome')->sortable()->searchable(),
-            TextColumn::make('type')->label('Tipo')->sortable()->formatStateUsing(
+            TextColumn::make('type')->label('Categoria')->sortable()->formatStateUsing(
                 fn (string $state): string => match ($state) {
                     'revenue' => 'Ativo/Receita',
                     'expense' => 'Passivo/Despesa'
@@ -51,7 +51,7 @@ class AccountPlanTypeResource extends Resource
         ])->filters([
             SelectFilter::make('type')->options([
                 'revenue' => 'Ativo/Receita', 'expense' => 'Passivo/Despesa'
-            ])->label('Tipo')
+            ])->label('Categoria')
         ])->actions([
                 EditAction::make()->label(''),
                 DeleteAction::make()->label(''),

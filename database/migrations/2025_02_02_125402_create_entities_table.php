@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('entities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['customer', 'supplier']); 
             $table->string('name'); 
+            $table->string('description')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();

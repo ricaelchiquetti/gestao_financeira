@@ -20,32 +20,27 @@ class FinanceTransactionStats extends BaseWidget
 
     protected function getStats(): array
     {
-        $query = $this->getPageTableQuery();
+        $totals = $this->getPageTableQuery()
+            ->whereHas('accountPlan.accountPlanType') 
+            ->with('accountPlan.accountPlanType') 
+            ->get()
+            ->groupBy(fn ($transaction) => $transaction->accountPlan->accountPlanType->type)
+            ->map(fn ($group) => $group->sum('value'));
 
-        $totalToPay = $query
-            ->whereHas('accountPlan.accountPlanType', function ($q) {
-                $q->where('type', 'expense');
-            })->sum('value');
-
-        $totalToReceive = $query
-            ->whereHas('accountPlan.accountPlanType', function ($q) {
-                $q->where('type', 'revenue'); 
-            })->sum('value');
-
-        $total = $totalToPay - $totalToReceive;
+        $total = $totals->get('revenue', 0) - $totals->get('expense', 0);
 
         return [
-            Stat::make('Total a Receber', number_format($totalToReceive, 2, ',', '.'))
+            Stat::make('Total a Receber', number_format($totals->get('revenue', 0), 2, ',', '.'))
                 ->description('receitas')
                 ->color('success'),
 
-            Stat::make('Total a Pagar', number_format($totalToPay, 2, ',', '.'))
+            Stat::make('Total a Pagar', number_format($totals->get('expense', 0), 2, ',', '.'))
                 ->description('despesas')
                 ->color('danger'),
             
-            Stat::make('Total a Pagar', number_format($total, 2, ',', '.'))
+            Stat::make('Total', number_format($total, 2, ',', '.'))
                 ->description('Total')
-                ->color($total >= 0 ? 'success':'danger')
+                ->color($total >= 0 ? 'success' : 'danger')
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Filament\Resources\EntityResource\Pages;
 use App\Models\Entity;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -30,15 +31,11 @@ class EntityResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('name')->required()->label('Nome')->columnSpanFull(),
-            Select::make('type')->options([
-                'supplier' => 'Fornecedor',
-                'customer' => 'Cliente',
-            ])->required()->label('Tipo')->columnSpanFull(),
-            
+            TextInput::make('name')->required()->label('Nome')->columnSpanFull(),            
             TextInput::make('email')->email()->label('E-mail'),
             TextInput::make('phone')->tel()->label('Telefone'),
             TextInput::make('address')->label('Endereço')->columnSpanFull(),
+            Textarea::make('description')->label('Observação')->columnSpanFull(),
             Hidden::make('company_id')->default(Auth::user()->company_id)
         ]);
     }
