@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'company_id',
         'admin',
         'master',
     ];
@@ -51,6 +52,16 @@ class User extends Authenticatable
 
     public function company(): BelongsTo
     {
-        return $this->belongsTo(Company::class); // Relacionamento com a empresa
+        return $this->belongsTo(Company::class);
+    }
+
+    public function isMaster(): bool
+    {
+        return $this->master;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->admin;
     }
 }

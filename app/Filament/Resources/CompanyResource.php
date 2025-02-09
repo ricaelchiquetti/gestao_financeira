@@ -44,16 +44,17 @@ class CompanyResource extends Resource
             TextColumn::make('cnpj')->label('CNPJ')->searchable()->sortable(),
             IconColumn::make('active')->label('Ativo')->boolean()->sortable(),
         ])->actions([
-                EditAction::make()->label(''),
-                DeleteAction::make()->label(''),
+            EditAction::make()->label(''),
+            DeleteAction::make()->label(''),
         ])->bulkActions([
             DeleteBulkAction::make(),
         ]);
     }
 
-    public static function getTableQuery()
+    public static function getTableQuery(): Builder
     {
-        return parent::getTableQuery()->where('company_id', Auth::user()->company_id);
+        return parent::getTableQuery()
+            ->where('company_id', auth()->user()->company_id);
     }
 
     public static function getPages(): array

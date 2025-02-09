@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
@@ -30,16 +31,31 @@ class UserResource extends Resource
     {
         return $form->schema([
             TextInput::make('name')->label('Nome')->required()->maxLength(255),
-            TextInput::make('email')->label('E-mail')->required()->email()->unique(User::class, 'email', fn ($query) => $query->ignore(auth()->id())),
+            TextInput::make('email')->label('E-mail')->required()->email(),
             TextInput::make('password')->label('Senha')->columns(2)
                 ->required()
                 ->minLength(8)
                 ->same('password_confirmation')
                 ->password()
                 ->revealable(),
+            TextInput::make('password_confirmation')->label('Confirme a Senha')->columns(2)
+                ->required()
+                ->minLength(8)
+                ->same('password')
+                ->password()
+                ->revealable(),
             Toggle::make('admin')->label('Administrador')->default(false)->columnSpanFull(),
-            Hidden::make('company_id')->default(Auth::user()->company_id)
+            self::getCompanyForm()
         ]);
+    }
+
+    private static function getCompanyForm()
+    {
+        if (Auth::user()->isMaster())
+            return Select::make('company_id')->required()->columnSpanFull()->label('Empresa')
+                ->relationship('company', 'name');
+
+        return Hidden::make('company_id')->default(Auth::user()->company_id);
     }
 
     public static function table(Table $table): Table
