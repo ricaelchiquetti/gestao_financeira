@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
@@ -37,6 +38,7 @@ class UserResource extends Resource
                 ->password()
                 ->revealable(),
             Toggle::make('admin')->label('Administrador')->default(false)->columnSpanFull(),
+            Hidden::make('company_id')->default(Auth::user()->company_id)
         ]);
     }
 
