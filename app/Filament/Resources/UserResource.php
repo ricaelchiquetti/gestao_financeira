@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -18,9 +19,9 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationGroup = 'Minhas Empresas';
+    protected static ?string $navigationGroup = 'Minha Empresa';
 
     protected static ?string $label = 'Usuários';
 
@@ -29,12 +30,13 @@ class UserResource extends Resource
         return $form->schema([
             TextInput::make('name')->label('Nome')->required()->maxLength(255),
             TextInput::make('email')->label('E-mail')->required()->email()->unique(User::class, 'email', fn ($query) => $query->ignore(auth()->id())),
-            TextInput::make('password')->label('Senha')
+            TextInput::make('password')->label('Senha')->columns(2)
                 ->required()
                 ->minLength(8)
                 ->same('password_confirmation')
                 ->password()
                 ->revealable(),
+            Toggle::make('admin')->label('Administrador')->default(false)->columnSpanFull(),
         ]);
     }
 
