@@ -2,6 +2,7 @@
 # Make sure this file has executable permissions, run `chmod +x build.sh`
 
 # Build assets using NPM
+npm install
 npm run build
 
 # Clear cache
