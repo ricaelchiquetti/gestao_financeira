@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FinanceTransactionResource\Filters\AccountPlanTypeFilter;
-use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
+use App\Filament\Resources\CompanyResource\Filters\CompanyIdFilter;
 use App\Filament\Resources\FinanceTransactionResource\Filters\EndTransactionDateFilter;
 use App\Filament\Resources\FinanceTransactionResource\Filters\StartTransactionDateFilter;
 use App\Filament\Resources\FinanceTransactionResource\Pages;

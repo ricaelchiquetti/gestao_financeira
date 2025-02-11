@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountPlanResource\Pages;
-use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
+use App\Filament\Resources\CompanyResource\Filters\CompanyIdFilter;
 use App\Models\AccountPlan;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;

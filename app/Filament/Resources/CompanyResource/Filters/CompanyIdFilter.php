@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\FinanceTransactionResource\Filters;
+namespace App\Filament\Resources\CompanyResource\Filters;
 
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Facades\Auth;
 
 class CompanyIdFilter

@@ -2,21 +2,19 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\CompanyResource\Filters\CompanyIdFilter;
 use App\Filament\Resources\CompanyResource\Pages;
-use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
 use App\Models\Company;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Auth;
 
 class CompanyResource extends Resource
 {

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FinanceTransactionResource\Filters\CompanyIdFilter;
+use App\Filament\Resources\CompanyResource\Filters\CompanyIdFilter;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms\Components\Hidden;
