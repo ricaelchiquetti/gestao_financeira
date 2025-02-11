@@ -10,10 +10,6 @@ php artisan vendor:publish --tag=filament-notifications-translations --force
 php artisan vendor:publish --tag=filament-tables-translations --force
 php artisan vendor:publish --tag=filament-translations --force
 
-# Build assets usando NPM
-npm install
-npm run build
-
 # Limpar cache do Laravel
 php artisan optimize:clear
 php artisan cache:clear
