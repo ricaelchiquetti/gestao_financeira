@@ -9,3 +9,14 @@ php artisan config:cache
 php artisan event:cache
 php artisan route:cache
 php artisan view:cache
+
+php artisan filament:optimize
+
+php artisan vendor:publish --tag=filament-config
+php artisan vendor:publish --tag=filament-panels-translations
+php artisan vendor:publish --tag=filament-actions-translations
+php artisan vendor:publish --tag=filament-forms-translations
+php artisan vendor:publish --tag=filament-infolists-translations
+php artisan vendor:publish --tag=filament-notifications-translations
+php artisan vendor:publish --tag=filament-tables-translations
+php artisan vendor:publish --tag=filament-translations
