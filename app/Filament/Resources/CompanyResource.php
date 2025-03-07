@@ -52,12 +52,6 @@ class CompanyResource extends Resource
         ]);
     }
 
-    public static function getTableQuery(): Builder
-    {
-        return parent::getTableQuery()
-            ->where('company_id', auth()->user()->company_id);
-    }
-
     public static function getPages(): array
     {
         return [
