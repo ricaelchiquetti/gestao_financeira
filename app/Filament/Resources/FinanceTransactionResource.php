@@ -41,7 +41,7 @@ class FinanceTransactionResource extends Resource
                     return $record->code . ' - ' . $record->description;
                 })->columnSpanFull(),
 
-            Select::make('entity_id')->required()->searchable()->label('Fornecedor/Cliente')
+            Select::make('entity_id')->searchable()->label('Fornecedor/Cliente')
                 ->relationship('entity', 'name'),
 
             TextInput::make('value')->required()->numeric()->label('Valor'),
