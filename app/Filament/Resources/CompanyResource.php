@@ -41,8 +41,6 @@ class CompanyResource extends Resource
             TextColumn::make('name')->label('Nome')->searchable()->sortable(),
             TextColumn::make('cnpj')->label('CNPJ')->searchable()->sortable(),
             IconColumn::make('active')->label('Ativo')->boolean()->sortable(),
-        ])->filters([
-            CompanyIdFilter::make()
         ])->actions([
             EditAction::make()->label(''),
             DeleteAction::make()->label(''),
