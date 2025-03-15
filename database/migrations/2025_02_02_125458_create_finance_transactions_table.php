@@ -14,14 +14,14 @@ return new class extends Migration {
             $table->id();
             $table->date('due_date');
             $table->date('transaction_date')->nullable();
-            
+
             $table->decimal('value', 10, 2);
             $table->text('description')->nullable();
             $table->string('payment_method')->nullable();
 
-            $table->foreignId('entity_id')->constrained('entities')->onDelete('cascade'); 
+            $table->foreignId('entity_id')->nullable()->constrained('entities')->onDelete('cascade');
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
-            $table->foreignId('account_plan_id')->constrained('account_plans')->onDelete('cascade'); 
+            $table->foreignId('account_plan_id')->constrained('account_plans')->onDelete('cascade');
 
             $table->timestamps();
         });
