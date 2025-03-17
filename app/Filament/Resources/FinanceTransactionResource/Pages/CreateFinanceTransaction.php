@@ -20,7 +20,9 @@ class CreateFinanceTransaction extends CreateRecord
         $record = array_map(function ($fields) use (&$data, &$index, $count) {
             $index++;
             $fields = array_merge($fields, $data);
-            $fields['description'] .= " $index/$count";
+            if ($count > 1) {
+                $fields['description'] .= " $index/$count";
+            }
 
             $record = new ($this->getModel())($fields);
             if (static::getResource()::isScopedToTenant() && ($tenant = Filament::getTenant())) {
