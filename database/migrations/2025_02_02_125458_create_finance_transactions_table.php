@@ -17,7 +17,6 @@ return new class extends Migration {
 
             $table->decimal('value', 10, 2);
             $table->text('description')->nullable();
-            $table->string('payment_method')->nullable();
 
             $table->foreignId('entity_id')->nullable()->constrained('entities')->onDelete('cascade');
             $table->foreignId('company_id')->constrained()->onDelete('cascade');

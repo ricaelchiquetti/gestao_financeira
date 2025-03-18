@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $code
  * @property float $value
  * @property string $due_date
- * @property string $payment_method
  */
 class FinanceTransaction extends Model
 {
@@ -26,11 +25,12 @@ class FinanceTransaction extends Model
         'company_id',
         'entity_id',
         'account_plan_id',
+        'financial_account_id',
         'transaction_date',
         'code',
         'value',
+        'document_number',
         'due_date',
-        'payment_method',
     ];
 
     protected $casts = [
@@ -52,5 +52,10 @@ class FinanceTransaction extends Model
     public function accountPlan(): BelongsTo
     {
         return $this->belongsTo(AccountPlan::class);
+    }
+
+    public function financialAccount(): BelongsTo
+    {
+        return $this->belongsTo(FinancialAccount::class);
     }
 }

@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\AccountPlanResource\Filters\AccountPlanFilter;
 use App\Filament\Resources\FinanceTransactionResource\Filters\AccountPlanTypeFilter;
 use App\Filament\Resources\CompanyResource\Filters\CompanyIdFilter;
-use App\Filament\Resources\FinanceTransactionResource\Filters\EndTransactionDateFilter;
-use App\Filament\Resources\FinanceTransactionResource\Filters\StartTransactionDateFilter;
+use App\Filament\Resources\FinanceTransactionResource\Filters\EndDueDateFilter;
+use App\Filament\Resources\FinanceTransactionResource\Filters\StartDueDateFilter;
 use App\Filament\Resources\FinanceTransactionResource\Pages;
 use App\Filament\Resources\FinanceTransactionResource\Widgets\FinanceTransactionStats;
 use App\Models\FinanceTransaction;
@@ -13,7 +14,6 @@ use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
@@ -39,12 +39,16 @@ class FinanceTransactionResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Select::make('account_plan_id')->required()->searchable()->label('Plano de Conta')
-                ->relationship('accountPlan', 'code')->getOptionLabelFromRecordUsing(function ($record) {
+            Select::make('account_plan_id')->required()->label('Plano de Conta')
+                ->relationship('accountPlan', 'code')
+                ->searchable(['code', 'description'])
+                ->getOptionLabelFromRecordUsing(function ($record) {
                     return $record->code . ' - ' . $record->description;
                 })->columnSpanFull(),
 
-            TextInput::make('description')->label('Descrição')->columnSpanFull(),
+            TextInput::make('description')->label('Descrição'),
+
+            TextInput::make('document_number')->label('Nº Documento'),
 
             Select::make('entity_id')->searchable()->label('Fornecedor/Cliente')->relationship('entity', 'name'),
 
@@ -69,7 +73,7 @@ class FinanceTransactionResource extends Resource
                 ->visible(fn(Get $get): bool => $get('installments') > 1),
 
             Repeater::make('installments_fields')->label('')->columnSpanFull()
-                ->schema(self::updateForm())->columns(3)->addable(false)->deletable(false)->reorderable(false),
+                ->schema(self::updateForm())->columns(4)->addable(false)->deletable(false)->reorderable(false),
         ];
     }
 
@@ -79,6 +83,7 @@ class FinanceTransactionResource extends Resource
             TextInput::make('value')->required()->numeric()->label('Valor'),
             DatePicker::make('due_date')->required()->label('Vencimento'),
             DatePicker::make('transaction_date')->label('Data de Transação'),
+            Select::make('financial_account_id')->label('Conta Financeira')->relationship('financialAccount', 'name'),
         ];
     }
 
@@ -115,15 +120,15 @@ class FinanceTransactionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('transaction_date')->toggleable()->date('d/m/Y')->sortable()->label('Data de Transação'),
             TextColumn::make('accountPlan.code')->toggleable()->searchable()->sortable()->label('Código'),
             TextColumn::make('description')->toggleable()->searchable()->sortable()->label('Descrição'),
             TextColumn::make('entity.name')->toggleable()->searchable()->sortable()->label('Fornecedor/Cliente'),
             TextColumn::make('value')->toggleable()->sortable()->label('Valor'),
             TextColumn::make('due_date')->toggleable()->date('d/m/Y')->sortable()->label('Vencimento'),
         ])->filters([
-            StartTransactionDateFilter::make(),
-            EndTransactionDateFilter::make(),
+            StartDueDateFilter::make(),
+            EndDueDateFilter::make(),
+            AccountPlanFilter::make(),
             AccountPlanTypeFilter::make(),
             CompanyIdFilter::make()
         ], layout: FiltersLayout::AboveContent)->actions([
