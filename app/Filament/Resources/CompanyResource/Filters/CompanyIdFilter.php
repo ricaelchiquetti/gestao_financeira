@@ -9,11 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class CompanyIdFilter
 {
-    public static function make()
+    public static function make($table = null)
     {
+        $companyId = 'company_id';
+        if ($table) $companyId = "$table.$companyId";
+
         return Filter::make('company_id')->form([
             self::getFieldCompanyId()
-        ])->query(fn($query, $data) => $query->where('company_id', $data['company_id']));
+        ])->query(fn($query, $data) => $query->where($companyId, $data['company_id']));
     }
 
     private static function getFieldCompanyId()

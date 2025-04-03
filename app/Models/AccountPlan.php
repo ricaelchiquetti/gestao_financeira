@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -32,5 +33,10 @@ class AccountPlan extends Model
     public function accountPlanType()
     {
         return $this->belongsTo(AccountPlanType::class);
+    }
+
+    public function financeTransactions(): HasMany
+    {
+        return $this->hasMany(FinanceTransaction::class);
     }
 }
