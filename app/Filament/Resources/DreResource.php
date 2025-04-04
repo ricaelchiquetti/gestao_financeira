@@ -20,7 +20,9 @@ class DreResource extends Resource
 {
     protected static ?string $model = AccountPlan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-presentation-chart-line';
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $label = 'DRE';
     protected static ?string $pluralLabel = 'DRE';

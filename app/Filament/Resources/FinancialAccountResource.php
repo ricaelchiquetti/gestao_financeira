@@ -23,7 +23,7 @@ class FinancialAccountResource extends Resource
 {
     protected static ?string $model = FinancialAccount::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-library';
+    protected static ?string $navigationIcon = 'heroicon-m-building-library';
 
     protected static ?string $navigationGroup = 'Minha Empresa';
 

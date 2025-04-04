@@ -22,7 +22,7 @@ class AccountPlanTypeResource extends Resource
 {
     protected static ?string $model = AccountPlanType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static ?string $navigationIcon = 'heroicon-m-tag';
 
     protected static ?string $navigationGroup = 'Plano de Contas';
 

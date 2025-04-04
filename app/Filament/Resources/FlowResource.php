@@ -20,7 +20,9 @@ class FlowResource extends Resource
 {
     protected static ?string $model = AccountPlan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-arrow-down-on-square';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $label = 'Fluxo';
     protected static ?string $pluralLabel = 'Fluxo';

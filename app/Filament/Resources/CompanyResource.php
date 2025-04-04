@@ -19,7 +19,7 @@ class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static ?string $navigationIcon = 'heroicon-m-building-office-2';
 
     protected static ?string $navigationGroup = 'Admin';
     protected static ?int $navigationSort = 999;

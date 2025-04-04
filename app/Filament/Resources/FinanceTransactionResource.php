@@ -32,7 +32,9 @@ class FinanceTransactionResource extends Resource
 {
     protected static ?string $model = FinanceTransaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationIcon = 'heroicon-m-document-currency-dollar';
 
     protected static ?string $label = 'Transações Financeiras';
 

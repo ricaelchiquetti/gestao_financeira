@@ -25,7 +25,7 @@ class AccountPlanResource extends Resource
 
     protected static ?string $navigationGroup = 'Plano de Contas';
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+    protected static ?string $navigationIcon = 'heroicon-m-credit-card';
 
     public static function form(Form $form): Form
     {
