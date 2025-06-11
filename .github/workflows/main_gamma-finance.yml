@@ -1,4 +1,4 @@
-# Manual de instruções para o GitHub (VERSÃO CORRIGIDA)
+# Manual de instruções para o GitHub (VERSÃO FINAL CORRIGIDA)
 name: Enviar site para Azure
 
 on:
@@ -27,17 +27,16 @@ jobs:
         with:
           node-version: '18'
 
-      # ----> NOVO PASSO ADICIONADO AQUI <----
-      # Passo 4: Criar .env para a build
-      - name: 'Criar .env para a build'
+      # Passo 4: Instalar pacotes do Composer (AGORA VEM ANTES)
+      - name: 'Instalar pacotes do Composer'
+        run: composer install --prefer-dist --no-progress --no-dev -o
+
+      # Passo 5: Criar .env para a build (AGORA VEM DEPOIS DO COMPOSER)
+      - name: 'Criar arquivo .env para a build'
         run: |
           php -r "file_exists('.env') || copy('.env.example', '.env');"
           php artisan key:generate
           php artisan config:clear
-
-      # Passo 5: Instalar pacotes do Composer
-      - name: 'Instalar pacotes do Composer'
-        run: composer install --prefer-dist --no-progress --no-dev -o
 
       # Passo 6: Instalar pacotes do NPM
       - name: 'Instalar pacotes do NPM'
