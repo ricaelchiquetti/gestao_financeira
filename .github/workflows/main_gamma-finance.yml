@@ -19,13 +19,13 @@ jobs:
       - name: 'Preparar PHP 8.2'
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.4'
           
       # Passo 3: Preparar o Node.js
       - name: 'Preparar Node.js'
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '22'
 
       # Passo 4: Instalar pacotes do Composer (AGORA VEM ANTES)
       - name: 'Instalar pacotes do Composer'
