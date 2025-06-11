@@ -1,78 +1,54 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+# Manual de instruções para o GitHub
+name: Enviar site para Azure
 
-name: Build and deploy PHP app to Azure Web App - gamma-finance
-
+# Gatilho: Rodar sempre que houver atualização na branch 'main'
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read #This is required for actions/checkout
+  build-and-deploy:
+    runs-on: ubuntu-latest # Usar uma máquina virtual limpa
 
     steps:
-      - uses: actions/checkout@v4
+      # Passo 1: Baixar o código do seu GitHub
+      - name: 'Baixar o código'
+        uses: actions/checkout@v4
 
-      - name: Setup PHP
+      # Passo 2: Preparar o ambiente PHP
+      - name: 'Preparar PHP 8.2'
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
 
-      - name: Check if composer.json exists
-        id: check_files
-        uses: andstor/file-existence-action@v1
+      # Passo 3: Preparar o Node.js para os arquivos de estilo (CSS)
+      - name: 'Preparar Node.js'
+        uses: actions/setup-node@v3
         with:
-          files: 'composer.json'
+          node-version: '18'
 
-      - name: Run composer install if composer.json exists
-        if: steps.check_files.outputs.files_exists == 'true'
-        run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
+      # Passo 4: Instalar as dependências do Laravel
+      - name: 'Instalar pacotes do Composer'
+        run: composer install --prefer-dist --no-progress --no-dev -o
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      # Passo 5: Instalar pacotes do front-end
+      - name: 'Instalar pacotes do NPM'
+        run: npm install
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+      # Passo 6: Compilar os arquivos de estilo e script
+      - name: 'Compilar CSS e JS'
+        run: npm run build
+
+      # Passo 7: Usar o crachá para fazer login na Azure
+      - name: 'Fazer login na Azure'
+        uses: azure/login@v1
         with:
-          name: php-app
-          path: release.zip
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+      # Passo 8: Enviar os arquivos do site para a "casa" na Azure
+      - name: 'Enviar arquivos para o App Service'
+        uses: azure/webapps-deploy@v2
         with:
-          name: php-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_92B3B01FDE114211AEE0A1F5D3C112F8 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8DB8365A2E0D44509577E8B3A3BFEC26 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C1366828ABFF48139CB9C00BA7DDC7F1 }}
-
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
-        with:
-          app-name: 'gamma-finance'
-          slot-name: 'Production'
+          app-name: 'SEU_NOME_DO_APP' # <<< TROQUE AQUI pelo nome do seu App Service
           package: .
-          
